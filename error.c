@@ -1,10 +1,4 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <errno.h>
-
-#include <SDL2/SDL.h>
-
-#include "include/render.h"
+#include "include/econsim.h"
 
 void die_sdl_error(const char *str) {
     fprintf(stderr, "%s: %s", str, SDL_GetError());
@@ -16,3 +10,7 @@ void die_error(const char *str) {
     quit_sdl();
 }
 
+void die_econsim_error(const char *str) {
+    fprintf(stderr, str);
+    quit_sdl();
+}

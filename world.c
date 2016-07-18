@@ -23,106 +23,72 @@ int height_map_get_random_neighbor(int *height_map, int drop_point) {
     int n = 0;
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* left */
-        fprintf(stderr, "checking left %d[%d] vs. %d[%d]...", drop_point-(i-1), height_map[drop_point-(i-1)], drop_point - i, height_map[drop_point-i]);
-
         if ((drop_point % WIDTH <= (i-1)) ||
-            (height_map[drop_point - i] >= height_map[drop_point - (i-1)])) {
-            fprintf(stderr, "fail\n");
+            (height_map[drop_point - i] >= height_map[drop_point - (i-1)]))
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point - i;
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* right */
-        fprintf(stderr, "checking right %d[%d] vs. %d[%d]...", drop_point+i-1, height_map[drop_point+i-1], drop_point + i, height_map[drop_point+i]);
         if ((drop_point % WIDTH >= (WIDTH - i)) ||
-            (height_map[drop_point + i] >= height_map[drop_point + (i-1)])) {
+            (height_map[drop_point + i] >= height_map[drop_point + (i-1)]))
             fprintf(stderr, "fail\n");
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point + i;
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* top */
-        fprintf(stderr, "checking up %d[%d] vs. %d[%d]...", drop_point - (i-1)*WIDTH, height_map[drop_point - (i-1)*WIDTH], drop_point - i*WIDTH, height_map[drop_point-i*WIDTH]);
         if (drop_point / WIDTH <= i - 1 ||
-           (height_map[drop_point - i*WIDTH] >= height_map[drop_point - (i-1)*WIDTH])) {
-            fprintf(stderr, "fail\n");
+           (height_map[drop_point - i*WIDTH] >= height_map[drop_point - (i-1)*WIDTH]))
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point - i*WIDTH;
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* down */
-        fprintf(stderr, "checking down %d[%d] vs. %d[%d]...", drop_point + (i-1)*WIDTH, height_map[drop_point + (i-1)*WIDTH], drop_point + i*WIDTH, height_map[drop_point+i*WIDTH]);
         if (((drop_point / WIDTH) >= (HEIGHT - i)) ||
-            (height_map[drop_point + i*WIDTH] >= height_map[drop_point + (i-1)*WIDTH])) {
-            fprintf(stderr, "fail\n");
+            (height_map[drop_point + i*WIDTH] >= height_map[drop_point + (i-1)*WIDTH]))
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point + i*WIDTH;
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* up-left */
-        fprintf(stderr, "checking up-left %d[%d] vs. %d[%d]...", drop_point - (i-1)*(WIDTH+1), height_map[drop_point - (i-1)*(WIDTH+1)], drop_point - i*(WIDTH+1), height_map[drop_point-i*(WIDTH+1)]);
         if (((drop_point % WIDTH) <= (i-1)) || ((drop_point / WIDTH) <= (i-1)) ||
-            (height_map[drop_point - i*(WIDTH+1)] >= height_map[drop_point - (i-1)*(WIDTH+1)])) {
-            fprintf(stderr, "fail\n");
+            (height_map[drop_point - i*(WIDTH+1)] >= height_map[drop_point - (i-1)*(WIDTH+1)]))
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point - i*(WIDTH+1);
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* up-right */
-        fprintf(stderr, "checking up-right %d[%d] vs. %d[%d]...", drop_point - (i-1)*(WIDTH-1), height_map[drop_point - (i-1)*(WIDTH-1)], drop_point - i*(WIDTH-1), height_map[drop_point-i*(WIDTH+-i)]);
         if (drop_point % WIDTH >= WIDTH - i || drop_point / WIDTH <= i - 1 ||
-            height_map[drop_point - i*(WIDTH-1)] >= height_map[drop_point - (i-1)*(WIDTH-1)]) {
-            fprintf(stderr, "fail\n");
+            height_map[drop_point - i*(WIDTH-1)] >= height_map[drop_point - (i-1)*(WIDTH-1)])
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point + i*(WIDTH-1);
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* down-left */
-        fprintf(stderr, "checking down-left %d[%d] vs. %d[%d]...", drop_point + (i-1)*(WIDTH-1), height_map[drop_point + (i-1)*(WIDTH-1)], drop_point + i*(WIDTH-1), height_map[drop_point+i*(WIDTH+-i)]);
         if (drop_point % WIDTH <= i - 1 || drop_point / WIDTH >= HEIGHT - i ||
-            height_map[drop_point + i*(WIDTH-1)] >= height_map[drop_point + (i-1)*(WIDTH-1)]) {
-            fprintf(stderr, "fail\n");
+            height_map[drop_point + i*(WIDTH-1)] >= height_map[drop_point + (i-1)*(WIDTH-1)])
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point - i*(WIDTH+1);
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* down-right */
-        fprintf(stderr, "checking down-right %d[%d] vs. %d[%d]...", drop_point + (i-1)*(WIDTH+1), height_map[drop_point + (i-1)*(WIDTH+1)], drop_point + i*(WIDTH+1), height_map[drop_point+i*(WIDTH+1)]);
         if (drop_point % WIDTH >= WIDTH - i || drop_point / WIDTH >= HEIGHT - i ||
-            height_map[drop_point + i*(WIDTH+1)] >= height_map[drop_point + (i-1)*(WIDTH+1)]) {
-            fprintf(stderr, "fail\n");
+            height_map[drop_point + i*(WIDTH+1)] >= height_map[drop_point + (i-1)*(WIDTH+1)])
             break;
-        }
 
-        fprintf(stderr, "success\n");
         possible_neighbors[n++] = drop_point + i*(WIDTH-1);
     }
 
-    if (n <= 0) {
-        fprintf(stderr, "height_map_get_random_neighbor(): returning -1\n");
-        return -1;
-    }
+    if (n <= 0)
+        die_econsim_error("height_map_get_random_neighbor(): could not find any suitable neighbors\n");
 
     return possible_neighbors[randrange(0, n-1)];
 }
