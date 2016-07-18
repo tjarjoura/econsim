@@ -1,0 +1,14 @@
+WRITE ALL INTERESTING OUTPUT TO STDOUT
+
+1. [DONE] Set up SDL application in C, make sure everything is ok
+2. [DONE] Write code for world generation using height map
+3. [DONE] Assign a certain amount of resources to each cell, depending on the height
+4. [DONE] Write code for rendering the cells of the world, color based on resource density
+5. [DONE] Create an item struct and define attributes
+6. [DONE] Write code to initialize all of the available items
+7. [DONE] Create a shop struct and define attributes
+8. Update render code to show buildings with black squares
+9. Create agent struct and define attributes
+10. Write function to read neural network outputs and update itself/the world appropriately
+11. Update render code to render agents as red circles
+

@@ -1,0 +1,77 @@
+ITEMS:
+Resources: Wood, Crop, Livestock, Iron
+Tools: Axe, Knife, Shovel, Sickle
+Building: House, Shop
+Food: Vegetables, Meat
+
+Wood:
+-buildings
+-tools
+
+Iron:
+-buildings
+-tools
+
+
+
+agent:
+-moves around world
+-has vehicle (default to none)
+-vehicle controls capacity and speed
+
+
+inputs:
+    building info:
+      -owned by agent?
+      -capacity remaining
+      -building-type
+    price sensor:
+      -(for each item) how much it is for sale
+      -(for each item) how much is available
+    self info:
+      -how much money I have
+      -(for each item) how much I have
+      -my hunger
+      -am I in a vehicle?
+    cell info:
+      -(for each resouce) amount
+
+outputs: costs hunger
+    -movement
+    -move from inventory to building (float determining amount)
+    -item selector float (each item gets an equal range in 0.0-1.0)
+    -move from building to inventory (float determing amount)
+    -buy (float determing amount)
+    -enter/exit vehicle
+    -sell price modifier (used to set price of item moved into shop)
+
+-amount of money
+-lot resource density for each resource
+-amount of item in possession
+-amount of item in square
+-lot type (boolean)
+-own square (boolean)
+-current x
+-current y
+
+outputs:
+-move up/down/left/right
+-take amount (0 = don't take)
+-buy amount (0 = don't buy)
+-buy lot (must be for sale)
+-store (enough space in building required, will be for sale in shops)
+-harvest resource
+-build (integer defines what)
+-demolish
+-produce (must have required items in warehouse)
+-get in vehicle (must own vehicle and be on the same square)
+-get out of vehicle
+
+evaluation:
+-how much money they make
+-make $X to reproduce
+-how many days survived
+
+simulation runs in rounds, after each round all of the agents involved are evaluated.
+the highest evaluated ones are genetically crossed and used to populate the next round, along with some random agents
+
