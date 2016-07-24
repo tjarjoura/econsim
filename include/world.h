@@ -3,8 +3,8 @@
 
 #include "econsim.h"
 
-#define WIDTH 100
-#define HEIGHT 80
+#define WIDTH 300
+#define HEIGHT 300
 
 #define MAX_AGENTS 20
 

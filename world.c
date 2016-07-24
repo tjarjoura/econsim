@@ -1,6 +1,6 @@
 #include "include/econsim.h"
 
-#define DROP_RADIUS 3
+#define DROP_RADIUS 30
 
 struct sector world[WIDTH*HEIGHT];
 
@@ -33,7 +33,6 @@ int height_map_get_random_neighbor(int *height_map, int drop_point) {
     for (int i = 1; i <= DROP_RADIUS; i++) { /* right */
         if ((drop_point % WIDTH >= (WIDTH - i)) ||
             (height_map[drop_point + i] >= height_map[drop_point + (i-1)]))
-            fprintf(stderr, "fail\n");
             break;
 
         possible_neighbors[n++] = drop_point + i;
@@ -68,7 +67,7 @@ int height_map_get_random_neighbor(int *height_map, int drop_point) {
             height_map[drop_point - i*(WIDTH-1)] >= height_map[drop_point - (i-1)*(WIDTH-1)])
             break;
 
-        possible_neighbors[n++] = drop_point + i*(WIDTH-1);
+        possible_neighbors[n++] = drop_point - i*(WIDTH-1);
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* down-left */
@@ -76,7 +75,7 @@ int height_map_get_random_neighbor(int *height_map, int drop_point) {
             height_map[drop_point + i*(WIDTH-1)] >= height_map[drop_point + (i-1)*(WIDTH-1)])
             break;
 
-        possible_neighbors[n++] = drop_point - i*(WIDTH+1);
+        possible_neighbors[n++] = drop_point + i*(WIDTH+1);
     }
 
     for (int i = 1; i <= DROP_RADIUS; i++) { /* down-right */
@@ -90,7 +89,25 @@ int height_map_get_random_neighbor(int *height_map, int drop_point) {
     if (n <= 0)
         die_econsim_error("height_map_get_random_neighbor(): could not find any suitable neighbors\n");
 
-    return possible_neighbors[randrange(0, n-1)];
+
+    /*
+    fprintf(stderr, "possible_neighbors: ");
+    for (int l = 0; l < n; l++)
+        fprintf(stderr, "%d ", possible_neighbors[l]);
+    fprintf(stderr, "\n");
+    */
+
+    static int max_n = 0;
+    if (n > max_n)
+        max_n = n;
+
+    //fprintf(stderr, "max_n = %d out of %d\n", max_n, DROP_RADIUS*8);
+
+    int idx = randrange(0, n-1);
+
+    int ret = possible_neighbors[idx];
+    //fprintf(stderr, "idx=%d ret=%d\n", idx, ret);
+    return ret;
 }
 
 int height_map_check_stability(int *height_map, int drop_point) {
@@ -130,14 +147,15 @@ void get_height_map(int *height_map) {
 
     memset(height_map, 0, sizeof(int) * WIDTH * HEIGHT);
 
-    for (int i = 0; i < 1800; i++) {
-        drop_point = randrange(0, WIDTH*HEIGHT - 1);
-        n_drops = randrange(20, 30);
+    for (int i = 0; i < 8800; i++) {
+        drop_point = randrange(0, WIDTH*HEIGHT-1);
+        n_drops = randrange(800, 1000);
 
         for (int j = 0; j < n_drops; j++) {
             if (!height_map_check_stability(height_map, drop_point)) {
                 drop_neighbor = height_map_get_random_neighbor(height_map, drop_point);
-                //fprintf(stderr, "random neighbor: %d\n", drop_neighbor);
+                if (drop_neighbor > WIDTH*HEIGHT || drop_neighbor < 0)
+                    fprintf(stderr, "drop_point=%d drop_neighbor=%d\n", drop_point, drop_neighbor);
                 height_map[drop_neighbor]++;
             } else {
                 height_map[drop_point]++;
@@ -162,7 +180,6 @@ void init_world() {
     int *height_map = (int *) malloc(sizeof(int) * WIDTH * HEIGHT);
 
     get_height_map(height_map);
-
 
     for (int i = 0; i < WIDTH*HEIGHT; i++) {
         if (height_map[i] < 10) {
@@ -193,8 +210,5 @@ void init_world() {
         }
     }
 
-    //print_height_map(height_map);
-    printf("hi\n");
-    printf("height-map: %p\n", height_map);
     free(height_map);
 }

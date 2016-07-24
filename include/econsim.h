@@ -12,6 +12,7 @@
 #include <fann.h>  /* Fast Artificial Neural Networks */
 
 #include "error.h"
+#include "event.h"
 #include "item.h"
 #include "render.h"
 #include "util.h"

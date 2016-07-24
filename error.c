@@ -1,7 +1,7 @@
 #include "include/econsim.h"
 
 void die_sdl_error(const char *str) {
-    fprintf(stderr, "%s: %s", str, SDL_GetError());
+    fprintf(stderr, "%s: %s\n", str, SDL_GetError());
     quit_sdl();
 }
 
